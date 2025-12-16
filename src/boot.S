@@ -19,8 +19,8 @@ _start:
 	add sp, sp, t0
 	la tp, init_task_union
 
-	call create_page_table
-	call enable_mmu_relocate
+	//call create_page_table
+	//call enable_mmu_relocate
 
 	/* 跳转到C语言 */
 	tail kernel_main
