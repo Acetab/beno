@@ -182,8 +182,13 @@ int do_exception(struct pt_regs *regs, unsigned long scause)
 			 * 因为子进程拷贝父进程的regs，子进程的sepc没加4,子进程sret返回到
 			 * 用户空间时导致处理器出问题。
 			 */
+			extern long sys_show_student_info(void);
 			regs->sepc += 4;
-			riscv_svc_handler(regs);
+			if(regs->s7 ==100){
+				regs->a0 = sys_show_student_info();
+			}else{
+				riscv_svc_handler(regs);
+			}
 			break;
 		 case CAUSE_VIRTUAL_SUPERVISOR_ECALL:
 			ret = vs_sbi_ecall_handle(ecall_id, regs);

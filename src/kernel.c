@@ -29,6 +29,31 @@ extern unsigned long func_num_syms;
 extern char func_string;
 extern void trap_init(void);
 extern void trigger_load_access_fault();
+// 声明用户程序入口
+extern void my_user_app(void);
+
+void kernel_main(void)
+{
+    // ... 初始化代码 (uart_init, printk等) ...
+
+    printk("System init done. Jumping to User App...\n");
+
+    /* 手动构造上下文切换到 U 模式 */
+    unsigned long mstatus = read_csr(sstatus);
+    /* 清除 SPP 位 (设置为 0)，这样 sret 后会进入 U 模式 */
+    mstatus &= ~SR_SPP; 
+    /* 开启 U 模式中断使能 (可选) */
+    mstatus |= SR_SPIE; 
+    write_csr(sstatus, mstatus);
+
+    /* 设置 sepc 为用户程序入口地址 */
+    write_csr(sepc, (unsigned long)my_user_app);
+
+    /* 执行 sret，硬件会跳转到 sepc 并切换到 U 模式 */
+    asm volatile("sret");
+
+    while (1) { ; }
+}
 
 static int print_func_name(unsigned long addr)
 {
