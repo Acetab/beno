@@ -5,7 +5,7 @@
 #include "type.h"
 #include "asm/trap.h"
 #include "gos.h"
-
+#include "asm/plic.h"
 extern void vs_exception_vector(void);
 
 struct fault_info {

@@ -3,7 +3,7 @@
 #include "gos.h"
 #include "memset.h"
 #include "printk.h"
-
+#include "asm/plic.h"
 extern char bss_begin[], bss_end[];
 static void clean_bss(void)
 {

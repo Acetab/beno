@@ -3,7 +3,7 @@ SECTIONS
 	/*
         * 设置benos的加载入口地址为0x80200000
         */
-	. = 0x80200000,
+	. = 0x80200000;
 
 	/*
         * 这里是第一个段text.boot
@@ -17,6 +17,7 @@ SECTIONS
         * text代码段
         */
 	. = ALIGN(8);
+
 	_text = .;
 	_stext = .;
 	.text :

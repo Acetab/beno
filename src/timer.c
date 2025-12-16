@@ -6,6 +6,9 @@
 #include "io.h"
 #include "asm/clint.h"
 #include "asm/trap.h"
+/* 在 include 之后添加 */
+void riscv_vcpu_clear_interrupt(int intr);
+void riscv_vcpu_timer_event_start(unsigned long next_cycle);
 
 unsigned long volatile cacheline_aligned jiffies;
 

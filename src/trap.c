@@ -15,6 +15,7 @@
 #include "asm/vmm.h"
 
 extern void do_exception_vector(void);
+extern long sys_show_student_info(void);
 
 struct fault_info {
 	int (*fn)(struct pt_regs *regs, const char *name);
@@ -182,7 +183,6 @@ int do_exception(struct pt_regs *regs, unsigned long scause)
 			 * 因为子进程拷贝父进程的regs，子进程的sepc没加4,子进程sret返回到
 			 * 用户空间时导致处理器出问题。
 			 */
-			extern long sys_show_student_info(void);
 			regs->sepc += 4;
 			if(regs->s7 ==100){
 				regs->a0 = sys_show_student_info();
@@ -202,7 +202,7 @@ int do_exception(struct pt_regs *regs, unsigned long scause)
 		default:
 			inf = ec_to_fault_info(scause);
 			if (!inf->fn(regs, inf->name))
-			return;
+			return 0;
 		}
 	}
 
